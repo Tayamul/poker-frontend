@@ -1,0 +1,29 @@
+.playing-card {
+
+    width: 70px;
+    height: 100px;
+
+    background: white;
+    color: black;
+
+    border-radius: 8px;
+
+    padding: 8px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    font-size: 24px;
+    font-weight: bold;
+
+    box-shadow: 0 5px 10px rgba(0,0,0,.4);
+}
+
+.playing-card span:last-child{
+    align-self: flex-end;
+}
+
+.red{
+    color:#d62828;
+}

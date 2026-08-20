@@ -1,0 +1,335 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #101010;
+  color: white;
+}
+
+.game {
+  min-height: 100vh;
+  padding: 25px;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.game-header p {
+  margin-top: 6px;
+  color: #aaa;
+}
+
+/* Poker table */
+
+.poker-table {
+  position: relative;
+  width: min(1100px, 95vw);
+  height: 650px;
+  margin: 0 auto;
+
+  background: #176b3a;
+  border: 18px solid #5a351d;
+  border-radius: 50%;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.6),
+    inset 0 0 50px rgba(0, 0, 0, 0.3);
+}
+
+/* Players */
+
+.player {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 15px;
+
+  min-width: 150px;
+
+  background: #202020;
+  border: 2px solid #777;
+  border-radius: 12px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.player h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.player p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #444;
+  border: 2px solid #aaa;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Player positions */
+
+.player-top {
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.player-left {
+  left: -65px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.player-right {
+  right: -65px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.player-bottom {
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Active player */
+
+.active-player {
+  border-color: #f5c542;
+  box-shadow:
+    0 0 15px rgba(245, 197, 66, 0.5);
+}
+
+/* Centre */
+
+.table-centre {
+  position: absolute;
+
+  top: 45%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  text-align: center;
+}
+
+/* Pot */
+
+.pot {
+  margin-bottom: 15px;
+}
+
+.pot span {
+  display: block;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.pot strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 22px;
+}
+
+/* Community cards */
+
+.community-cards {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.card-placeholder {
+  width: 55px;
+  height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #174f32;
+
+  border: 2px dashed #aaa;
+  border-radius: 7px;
+
+  font-size: 25px;
+  color: #aaa;
+}
+
+/* Your cards */
+
+.hand {
+  position: absolute;
+
+  bottom: 75px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 10px;
+}
+
+.playing-card {
+  width: 70px;
+  height: 100px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  padding: 8px;
+
+  background: white;
+  color: black;
+
+  border-radius: 8px;
+
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.playing-card span:last-child {
+  align-self: flex-end;
+}
+
+.playing-card.red {
+  color: #d62828;
+}
+
+/* Buttons */
+
+.controls {
+  position: absolute;
+
+  bottom: -85px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 12px;
+}
+
+.controls button {
+  border: none;
+  border-radius: 8px;
+
+  padding: 12px 28px;
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: transform 0.15s ease;
+}
+
+.controls button:hover {
+  transform: translateY(-2px);
+}
+
+.fold-button {
+  background: #b83232;
+}
+
+.check-button {
+  background: #3569b8;
+}
+
+.bet-button {
+  background: #218739;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .game {
+    padding: 10px;
+  }
+
+  .game-header h1 {
+    font-size: 24px;
+  }
+
+  .poker-table {
+    width: 95vw;
+    height: 500px;
+    border-width: 10px;
+  }
+
+  .player {
+    min-width: 110px;
+    padding: 6px;
+  }
+
+  .player h2 {
+    font-size: 12px;
+  }
+
+  .player p {
+    font-size: 11px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 9px;
+  }
+
+  .player-left {
+    left: -20px;
+  }
+
+  .player-right {
+    right: -20px;
+  }
+
+  .card-placeholder {
+    width: 40px;
+    height: 60px;
+  }
+
+  .playing-card {
+    width: 55px;
+    height: 80px;
+  }
+
+  .controls button {
+    padding: 10px 16px;
+  }
+}
