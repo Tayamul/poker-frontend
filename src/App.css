@@ -1,335 +1,989 @@
+
+/* ========================================
+   NEPALESE POKER — COMPLETE APP STYLES
+   ======================================== */
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --text: #f5f5f5;
+  --muted: #9db2a9;
+  --gold: #e0bd58;
+  --felt: #115236;
+  --panel: rgba(5, 24, 16, 0.9);
+}
+
 * {
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  min-width: 320px;
+  min-height: 0;
+  margin: 0;
+}
+
 body {
+  overflow: hidden;
+  background: #101417;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* ========================================
+   APP LAYOUT
+   ======================================== */
+
+.app {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(
+      circle at top,
+      #20282c 0,
+      #101417 45%,
+      #090b0d 100%
+    );
+}
+
+/* ========================================
+   TOP BAR
+   ======================================== */
+
+.top-bar {
+  flex: 0 0 auto;
+  min-height: 0;
+  padding: clamp(7px, 1.5vh, 14px)
+    clamp(12px, 2.5vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #30383d;
+  background: rgba(10, 13, 15, 0.9);
+}
+
+.top-bar h1 {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #101010;
+  font-size: clamp(16px, 2.2vw, 22px);
+  letter-spacing: 0.3px;
+}
+
+.top-bar p {
+  margin: 3px 0 0;
+  color: #9aa6ac;
+  font-size: clamp(10px, 1.2vw, 13px);
+}
+
+.new-game-button {
+  flex: 0 0 auto;
+  padding: 9px 15px;
+  border: 1px solid #52616a;
+  border-radius: 8px;
   color: white;
+  background: #20292e;
+  transition: background 0.2s, transform 0.2s;
 }
 
-.game {
-  min-height: 100vh;
-  padding: 25px;
+.new-game-button:hover:not(:disabled) {
+  background: #2b373d;
+  transform: translateY(-1px);
 }
 
-.game-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
+/* ========================================
+   ERROR MESSAGE
+   ======================================== */
 
-.game-header h1 {
-  margin: 0;
-  font-size: 32px;
-}
-
-.game-header p {
-  margin-top: 6px;
-  color: #aaa;
-}
-
-/* Poker table */
-
-.poker-table {
-  position: relative;
-  width: min(1100px, 95vw);
-  height: 650px;
-  margin: 0 auto;
-
-  background: #176b3a;
-  border: 18px solid #5a351d;
-  border-radius: 50%;
-
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.6),
-    inset 0 0 50px rgba(0, 0, 0, 0.3);
-}
-
-/* Players */
-
-.player {
-  position: absolute;
-
+.error-message {
+  flex: 0 0 auto;
+  width: calc(100% - 24px);
+  max-width: 900px;
+  margin: 8px auto;
+  padding: 9px 13px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-
-  padding: 10px 15px;
-
-  min-width: 150px;
-
-  background: #202020;
-  border: 2px solid #777;
-  border-radius: 12px;
-
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid #7c3f3f;
+  border-radius: 8px;
+  color: #ffd7d7;
+  background: #351d1d;
+  font-size: 13px;
 }
 
-.player h2 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.player p {
-  margin: 4px 0 0;
-  font-size: 14px;
-  color: #ddd;
-}
-
-.avatar {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #444;
-  border: 2px solid #aaa;
-
-  font-size: 12px;
-  font-weight: bold;
-}
-
-/* Player positions */
-
-.player-top {
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.player-left {
-  left: -65px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.player-right {
-  right: -65px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.player-bottom {
-  bottom: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Active player */
-
-.active-player {
-  border-color: #f5c542;
-  box-shadow:
-    0 0 15px rgba(245, 197, 66, 0.5);
-}
-
-/* Centre */
-
-.table-centre {
-  position: absolute;
-
-  top: 45%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  text-align: center;
-}
-
-/* Pot */
-
-.pot {
-  margin-bottom: 15px;
-}
-
-.pot span {
-  display: block;
-  color: #ccc;
-  font-size: 14px;
-}
-
-.pot strong {
-  display: block;
-  margin-top: 5px;
+.error-message button {
+  border: 0;
+  color: #ffd7d7;
+  background: transparent;
   font-size: 22px;
 }
 
-/* Community cards */
+/* ========================================
+   WELCOME SCREEN
+   ======================================== */
 
-.community-cards {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.card-placeholder {
-  width: 55px;
-  height: 78px;
-
+.welcome-screen {
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background: #174f32;
-
-  border: 2px dashed #aaa;
-  border-radius: 7px;
-
-  font-size: 25px;
-  color: #aaa;
+  padding: 20px;
+  overflow: auto;
 }
 
-/* Your cards */
+.welcome-card {
+  width: min(440px, 100%);
+  padding: clamp(24px, 5vh, 48px) 28px;
+  text-align: center;
+  border: 1px solid #303a40;
+  border-radius: 18px;
+  background: #161d21;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+}
 
-.hand {
-  position: absolute;
-
-  bottom: 75px;
-  left: 50%;
-
-  transform: translateX(-50%);
-
+.poker-logo {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 36px;
+  background: #252e33;
 }
+
+.welcome-card h2 {
+  margin: 0 0 10px;
+  font-size: clamp(20px, 3vw, 25px);
+}
+
+.welcome-card p {
+  margin: 0 0 24px;
+  color: #98a4aa;
+  line-height: 1.6;
+}
+
+.start-button {
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 9px;
+  color: white;
+  background: #2f6f50;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.start-button:hover:not(:disabled) {
+  background: #3a805d;
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   TABLE WRAPPER AND FELT
+   ======================================== */
+
+.poker-table-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+  padding: clamp(5px, 1.5vh, 18px)
+    clamp(5px, 2vw, 20px);
+}
+
+.poker-table {
+  position: relative;
+  width: min(1100px, 100%);
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  padding: clamp(7px, 1.5vh, 22px);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  gap: clamp(4px, 0.8vh, 10px);
+  overflow: hidden;
+
+  border: clamp(5px, 1vw, 14px) solid #252d31;
+  border-radius: clamp(18px, 3vw, 42px);
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #17603e 0%,
+      #115236 48%,
+      #0d432d 100%
+    );
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.4),
+    inset 0 0 60px rgba(0, 0, 0, 0.16);
+}
+
+/* ========================================
+   TABLE HEADER AND POT
+   ======================================== */
+
+.table-header {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.phase {
+  padding: 5px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  color: #dbe8e2;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+}
+
+.pot-display {
+  text-align: center;
+}
+
+.pot-display span {
+  display: block;
+  color: #b8ccc3;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pot-display strong {
+  display: block;
+  margin-top: 1px;
+  font-size: clamp(16px, 2vw, 20px);
+}
+
+/* ========================================
+   PLAYER SEATS
+   ======================================== */
+
+.opponent-area,
+.your-area {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.player-seat {
+  width: min(430px, 100%);
+  min-width: 0;
+  padding: clamp(6px, 1vh, 15px)
+    clamp(8px, 1.5vw, 17px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 13px;
+  background: rgba(8, 15, 12, 0.78);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.player-seat.current-turn {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 2px rgba(224, 189, 88, 0.15),
+    0 0 22px rgba(224, 189, 88, 0.1);
+}
+
+.seat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.player-name {
+  font-size: clamp(12px, 1.5vw, 17px);
+  font-weight: 700;
+}
+
+.player-status {
+  margin-top: 3px;
+  color: #9db2a9;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.current-turn .player-status {
+  color: #e4c65e;
+}
+
+.dealer-chip {
+  width: 21px;
+  height: 21px;
+  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #202020;
+  background: #e5e5e5;
+  font-size: 10px;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.player-chips {
+  flex: 0 0 auto;
+  color: #d9e6df;
+  font-size: clamp(10px, 1.2vw, 14px);
+  font-weight: 600;
+}
+
+.player-cards {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: clamp(5px, 0.7vw, 9px);
+  margin-top: clamp(5px, 0.8vh, 12px);
+}
+
+.player-bet {
+  margin-top: clamp(5px, 0.8vh, 10px);
+  color: #a2b6ad;
+  font-size: 11px;
+  text-align: center;
+}
+
+/* ========================================
+   PLAYING CARDS — PHYSICAL DECK STYLE
+   ======================================== */
 
 .playing-card {
-  width: 70px;
-  height: 100px;
+  position: relative;
+  box-sizing: border-box;
 
-  display: flex;
-  flex-direction: column;
+  /* Maintain the classic 5:7 card proportion */
+  width: clamp(48px, 5.2vw, 76px);
+  aspect-ratio: 5 / 7;
+  height: auto;
+  flex: 0 0 auto;
+  overflow: hidden;
 
-  justify-content: space-between;
+  border: 1px solid #d5d0c7;
+  border-radius: 6px;
 
-  padding: 8px;
+  color: #17191b;
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #fffefa 60%,
+      #f3f0e9 100%
+    );
 
-  background: white;
-  color: black;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.18),
+    0 5px 9px rgba(0, 0, 0, 0.13),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
 
-  border-radius: 8px;
-
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
-
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.playing-card span:last-child {
-  align-self: flex-end;
+  user-select: none;
 }
 
 .playing-card.red {
-  color: #d62828;
+  color: #c62835;
 }
 
-/* Buttons */
+.playing-card.black {
+  color: #17191b;
+}
 
-.controls {
+/* Corner indices */
+
+.card-corner {
   position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
+  font-weight: 800;
+}
 
-  bottom: -85px;
-  left: 50%;
+.top-left {
+  top: 5px;
+  left: 5px;
+}
 
-  transform: translateX(-50%);
+.corner-rank {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(12px, 1.2vw, 17px);
+  line-height: 1;
+}
+
+.corner-suit {
+  font-size: clamp(10px, 0.95vw, 13px);
+  line-height: 1;
+}
+
+/* Upside-down index in the opposite corner */
+
+.bottom-right {
+  right: 5px;
+  bottom: 5px;
+  transform: rotate(180deg);
+}
+
+/* Smaller centre suit — deliberately not oversized */
+
+.card-center-suit {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: clamp(19px, 2vw, 27px);
+  line-height: 1;
+}
+
+/* Card backs */
+
+.playing-card.card-back {
+  padding: 3px;
+  border: 1px solid #e0d7ba;
+  background: #183967;
+}
+
+.card-back-pattern {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  border: 2px solid #e5d5a2;
+  border-radius: 3px;
+  outline: 1px solid rgba(229, 213, 162, 0.75);
+  outline-offset: -5px;
+
+  color: #f1dfaa;
+  background-color: #183b70;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 4px,
+      rgba(232, 219, 177, 0.2) 4px 5px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 4px,
+      rgba(232, 219, 177, 0.16) 4px 5px
+    );
 }
 
-.controls button {
-  border: none;
+.card-back-pattern > span:first-child,
+.card-back-pattern > span:last-child {
+  font-size: clamp(11px, 1.2vw, 17px);
+}
+
+.card-back-pattern .back-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: clamp(19px, 2vw, 28px);
+}
+
+/* Empty community card slots */
+
+.empty-card {
+  box-sizing: border-box;
+  width: clamp(48px, 5.2vw, 76px);
+  aspect-ratio: 5 / 7;
+  height: auto;
+  flex: 0 0 auto;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.035);
+}
+
+/* ========================================
+   COMMUNITY CARDS
+   ======================================== */
+
+.community-area {
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 0.7vh, 10px);
+}
+
+.community-label {
+  margin: 0;
+  color: #b5ccc1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.community-cards {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: clamp(3px, 0.65vw, 9px);
+}
+
+.table-message {
+  min-height: 14px;
+  margin-top: 0;
+  color: #d6e4dd;
+  font-size: clamp(10px, 1.1vw, 13px);
+  text-align: center;
+}
+
+/* ========================================
+   ACTION PANEL
+   ======================================== */
+
+.action-panel {
+  width: min(620px, 100%);
+  min-width: 0;
+  margin: 0 auto;
+  padding: clamp(7px, 1vh, 17px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 13px;
+  background: rgba(4, 15, 10, 0.82);
+}
+
+.turn-message {
+  margin-bottom: clamp(5px, 0.7vh, 13px);
+  color: #e2c45a;
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: 700;
+  text-align: center;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(5px, 0.8vw, 10px);
+}
+
+.action-button {
+  min-width: 0;
+  min-height: clamp(34px, 5vh, 45px);
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-
-  padding: 12px 28px;
-
   color: white;
-
-  font-size: 15px;
-  font-weight: bold;
-
-  cursor: pointer;
-
-  transition: transform 0.15s ease;
+  background: #27352f;
+  font-size: clamp(12px, 1.2vw, 15px);
+  font-weight: 700;
+  transition: background 0.15s, transform 0.15s;
 }
 
-.controls button:hover {
-  transform: translateY(-2px);
+.action-button:hover:not(:disabled) {
+  background: #34453d;
+  transform: translateY(-1px);
 }
 
-.fold-button {
-  background: #b83232;
+.action-button.fold {
+  color: #ffd4d4;
+  background: #472525;
 }
 
-.check-button {
-  background: #3569b8;
+.action-button.fold:hover:not(:disabled) {
+  background: #5a2c2c;
 }
 
-.bet-button {
-  background: #218739;
+.action-button.primary {
+  background: #286b4b;
 }
 
-/* Mobile */
+.action-button.primary:hover:not(:disabled) {
+  background: #347e59;
+}
+
+/* ========================================
+   BET INPUT
+   ======================================== */
+
+.bet-controls {
+  display: flex;
+  align-items: end;
+  gap: clamp(6px, 0.8vw, 10px);
+  margin-top: clamp(6px, 0.8vh, 10px);
+}
+
+.bet-input-group {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.bet-input-group label {
+  display: block;
+  margin-bottom: 4px;
+  color: #aabcb4;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-align: center;
+}
+
+.bet-input-group input {
+  width: 100%;
+  min-width: 0;
+  height: clamp(34px, 5vh, 45px);
+  padding: 0 10px;
+  border: 1px solid #43524b;
+  border-radius: 8px;
+  outline: none;
+  color: white;
+  background: #16211c;
+}
+
+.bet-input-group input:focus {
+  border-color: #d1b34f;
+}
+
+.bet-controls .primary {
+  flex: 0 0 150px;
+  align-self: end;
+}
+
+.bet-hint {
+  margin-top: 4px;
+  color: #82968d;
+  font-size: 10px;
+  text-align: right;
+}
+
+.opponent-thinking {
+  padding: 9px;
+  color: #aebdb6;
+  text-align: center;
+  font-size: 12px;
+}
+
+.thinking-dot {
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #d4b550;
+  animation: pulse 0.9s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+/* ========================================
+   SHOWDOWN
+   ======================================== */
+
+.showdown-panel {
+  width: min(450px, 100%);
+  margin: 0 auto;
+  padding: clamp(10px, 1.5vh, 24px);
+  text-align: center;
+  border: 1px solid rgba(225, 198, 91, 0.45);
+  border-radius: 14px;
+  background: rgba(20, 28, 23, 0.94);
+}
+
+.showdown-title {
+  color: #aebdb6;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.winner-name {
+  margin-top: 7px;
+  color: #e5ca63;
+  font-size: clamp(20px, 3vw, 25px);
+  font-weight: 800;
+}
+
+.winning-hand {
+  margin-top: 6px;
+  color: #d9e4df;
+  font-size: 14px;
+}
+
+/* ========================================
+   RESPONSIVE: TABLETS AND PHONES
+   ======================================== */
 
 @media (max-width: 700px) {
-
-  .game {
-    padding: 10px;
+  .top-bar {
+    padding: 7px 10px;
   }
 
-  .game-header h1 {
-    font-size: 24px;
+  .top-bar h1 {
+    font-size: 16px;
   }
 
-  .poker-table {
-    width: 95vw;
-    height: 500px;
-    border-width: 10px;
+  .top-bar p {
+    font-size: 10px;
   }
 
-  .player {
-    min-width: 110px;
-    padding: 6px;
-  }
-
-  .player h2 {
+  .new-game-button {
+    padding: 7px 9px;
     font-size: 12px;
   }
 
-  .player p {
-    font-size: 11px;
+  .poker-table-wrapper {
+    padding: 5px;
   }
 
-  .avatar {
-    width: 32px;
-    height: 32px;
+  .poker-table {
+    padding: 7px;
+    border-width: 5px;
+    border-radius: 18px;
+    gap: 4px;
+  }
+
+  .player-seat {
+    padding: 6px 8px;
+    border-radius: 11px;
+  }
+
+  .player-name {
+    font-size: 12px;
+  }
+
+  .player-chips,
+  .player-bet {
+    font-size: 10px;
+  }
+
+  .dealer-chip {
+    width: 18px;
+    height: 18px;
+    margin-left: 4px;
     font-size: 9px;
   }
 
-  .player-left {
-    left: -20px;
+  .playing-card,
+  .empty-card {
+    width: clamp(38px, 11vw, 54px);
   }
 
-  .player-right {
-    right: -20px;
+  .card-center-suit {
+    font-size: clamp(17px, 4.5vw, 22px);
   }
 
-  .card-placeholder {
-    width: 40px;
-    height: 60px;
+  .corner-rank {
+    font-size: clamp(10px, 2.7vw, 13px);
   }
 
-  .playing-card {
-    width: 55px;
-    height: 80px;
+  .corner-suit {
+    font-size: clamp(8px, 2.3vw, 10px);
   }
 
-  .controls button {
-    padding: 10px 16px;
+  .top-left {
+    top: 4px;
+    left: 4px;
+  }
+
+  .bottom-right {
+    right: 4px;
+    bottom: 4px;
+  }
+
+  .action-panel {
+    padding: 7px;
+    border-radius: 11px;
+  }
+
+  .action-button {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .bet-controls {
+    flex-direction: row;
+    align-items: end;
+  }
+
+  .bet-controls .primary {
+    flex: 0 0 38%;
+    width: 38%;
+  }
+
+  .bet-input-group input {
+    padding: 0 7px;
+    font-size: 14px;
+  }
+
+  .community-label {
+    font-size: 10px;
+  }
+
+  .table-message {
+    font-size: 10px;
+  }
+
+  .opponent-thinking {
+    padding: 5px;
+    font-size: 11px;
   }
 }
+
+/* ========================================
+   RESPONSIVE: SHORT VIEWPORTS
+   ======================================== */
+
+@media (max-height: 700px) {
+  .top-bar {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .poker-table-wrapper {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .poker-table {
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .playing-card,
+  .empty-card {
+    width: clamp(36px, 4.5vw, 60px);
+  }
+
+  .card-center-suit {
+    font-size: clamp(16px, 1.8vw, 22px);
+  }
+
+  .corner-rank {
+    font-size: clamp(10px, 1.1vw, 15px);
+  }
+
+  .corner-suit {
+    font-size: 10px;
+  }
+
+  .player-cards {
+    margin-top: 4px;
+  }
+
+  .player-bet {
+    margin-top: 4px;
+  }
+
+  .community-area {
+    gap: 4px;
+  }
+
+  .community-label {
+    font-size: 9px;
+  }
+
+  .action-panel {
+    padding: 5px 7px;
+  }
+
+  .turn-message {
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  .action-button,
+  .bet-input-group input {
+    min-height: 32px;
+    height: 32px;
+  }
+
+  .bet-hint {
+    font-size: 9px;
+  }
+}
+
+/* Extra narrow phones */
+@media (max-width: 380px) {
+  .top-bar {
+    gap: 5px;
+  }
+
+  .top-bar h1 {
+    font-size: 14px;
+  }
+
+  .new-game-button {
+    padding: 6px 7px;
+    font-size: 11px;
+  }
+
+  .playing-card,
+  .empty-card {
+    width: clamp(34px, 10vw, 42px);
+  }
+
+  .community-cards {
+    gap: 3px;
+  }
+
+  .card-center-suit {
+    font-size: 16px;
+  }
+
+  .corner-rank {
+    font-size: 10px;
+  }
+
+  .corner-suit {
+    font-size: 8px;
+  }
+
+  .bet-controls .primary {
+    flex-basis: 34%;
+    width: 34%;
+  }
+}
+
