@@ -571,11 +571,46 @@ button:disabled {
 }
 
 .table-message {
-  min-height: 14px;
-  margin-top: 0;
-  color: #d6e4dd;
-  font-size: clamp(10px, 1.1vw, 13px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: min(90%, 520px);
+  min-height: 40px;
+  margin: 14px auto 4px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+
+  color: #fff2c2;
+  background: linear-gradient(
+    135deg,
+    rgba(229, 199, 107, 0.16),
+    rgba(229, 199, 107, 0.07)
+  );
+  border: 1px solid rgba(229, 199, 107, 0.4);
+  border-radius: 12px;
+
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  font-weight: 600;
+  line-height: 1.5;
   text-align: center;
+  overflow-wrap: anywhere;
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+@media (max-width: 700px) {
+  .table-message {
+    max-width: 96%;
+    min-height: 36px;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
 }
 
 /* ========================================
@@ -862,10 +897,6 @@ button:disabled {
     font-size: 10px;
   }
 
-  .table-message {
-    font-size: 10px;
-  }
-
   .opponent-thinking {
     padding: 5px;
     font-size: 11px;
@@ -987,3 +1018,166 @@ button:disabled {
   }
 }
 
+/* ========================================
+   MULTIPLAYER
+   ======================================== */
+
+.home-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.home-menu a {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.home-menu button {
+  width: 100%;
+}
+
+.welcome-card .action-button {
+  margin-top: 12px;
+}
+
+.name-input {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+
+.name-input:focus {
+  border-color: #d8b45a;
+}
+
+.name-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.room-code {
+  margin: 24px 0;
+  padding: 18px;
+  border: 1px solid #d8b45a;
+  border-radius: 10px;
+  color: #f2d27a;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-align: center;
+}
+
+.lobby-card {
+  max-width: 440px;
+}
+
+.lobby-player-list {
+  width: 100%;
+  margin: 12px 0 20px;
+  text-align: left;
+}
+
+.lobby-player-list h3 {
+  margin-bottom: 12px;
+}
+
+.lobby-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.lobby-player-role {
+  color: #f2d27a;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.spectator-seat {
+  opacity: 0.85;
+  border-style: dashed;
+}
+
+.spectator-message {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* ========================================
+   COUNTDOWN
+   ======================================== */
+
+.next-hand-countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  max-width: 90%;
+  margin: 10px auto 4px;
+  padding: 10px 22px;
+  box-sizing: border-box;
+  text-align: center;
+
+  color: #fff2c2;
+  background: linear-gradient(
+    135deg,
+    rgba(229, 199, 107, 0.15),
+    rgba(229, 199, 107, 0.05)
+  );
+  border: 1px solid rgba(229, 199, 107, 0.35);
+  border-radius: 12px;
+}
+
+.next-hand-countdown-label {
+  color: #e5c76b;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.next-hand-countdown strong {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.next-hand-countdown-hint {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 700px) {
+  .next-hand-countdown {
+    gap: 3px;
+    margin-top: 7px;
+    padding: 8px 14px;
+  }
+
+  .next-hand-countdown-label {
+    font-size: 0.6rem;
+  }
+
+  .next-hand-countdown-hint {
+    font-size: 0.7rem;
+  }
+}
