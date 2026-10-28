@@ -1,9 +1,54 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 
-const API_URL = "http://localhost:8080";
+const API_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
-function cardSymbol(card) {
+type Card = {
+  rank: string | number;
+  suit: "Hearts" | "Diamonds" | "Clubs" | "Spades";
+};
+
+type Player = {
+  id: string;
+  name: string;
+  chips: number;
+  folded: boolean;
+  allIn: boolean;
+  holeCards: Card[];
+  currentBet: number;
+};
+
+type GameState = {
+  players: Player[];
+  currentPlayerId: string;
+  dealerPlayerId: string;
+  bigBlind: number;
+  minimumRaise: number;
+  phase: string;
+  pot: number;
+  communityCards: Card[];
+  lastAction?: string | null;
+  winnerPlayerIds?: string[];
+  winnerPlayerId?: string | null;
+  winningHand?: string | null;
+};
+
+type PokerAction = "fold" | "check" | "call" | "bet" | "raise";
+
+type PlayingCardProps = {
+  card?: Card;
+  hidden?: boolean;
+};
+
+type PlayerSeatProps = {
+  player: Player;
+  isYou: boolean;
+  isCurrentTurn: boolean;
+  isDealer: boolean;
+};
+
+function cardSymbol(card: Card): string {
   const suitSymbols = {
     Hearts: "♥",
     Diamonds: "♦",
@@ -14,7 +59,7 @@ function cardSymbol(card) {
   return suitSymbols[card.suit] || card.suit;
 }
 
-function cardColor(card) {
+function cardColor(card: Card): string  {
   if (card.suit === "Hearts" || card.suit === "Diamonds") {
     return "red";
   }
@@ -22,7 +67,7 @@ function cardColor(card) {
   return "black";
 }
 
-function PlayingCard({ card, hidden = false }) {
+function PlayingCard({ card, hidden = false }: PlayingCardProps) {
   if (hidden) {
     return (
       <div className="playing-card card-back">
@@ -33,6 +78,10 @@ function PlayingCard({ card, hidden = false }) {
         </div>
       </div>
     );
+  }
+
+  if (!card) {
+    return null;
   }
 
   const suit = cardSymbol(card);
@@ -55,7 +104,7 @@ function PlayingCard({ card, hidden = false }) {
   );
 }
 
-function PlayerSeat({ player, isYou, isCurrentTurn, isDealer }) {
+function PlayerSeat({ player, isYou, isCurrentTurn, isDealer }: PlayerSeatProps) {
   return (
     <div
       className={`player-seat ${
@@ -112,10 +161,10 @@ function PlayerSeat({ player, isYou, isCurrentTurn, isDealer }) {
 }
 
 function ComputerGamePage() {
-  const [game, setGame] = useState(null);
+  const [game, setGame] = useState<GameState | null>(null);
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [betAmount, setBetAmount] = useState("");
 
   const you = game?.players.find(
@@ -176,29 +225,36 @@ function ComputerGamePage() {
 
       const data = await response.json();
 
-      setGame(data);
+      setGame(data as GameState);
     } catch (err) {
       console.error(err);
-      setError(err.message);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred"
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const performAction = async (
-    action,
-    amount = null
+    action: PokerAction,
+    amount: number | null = null
   ) => {
     setActionLoading(true);
     setError(null);
 
     try {
-      const body = {
+      const body: {
+        action: PokerAction;
+        amount?: number;
+      } = {
         action,
       };
 
       if (amount !== null) {
-        body.amount = Number(amount);
+        body.amount = amount;
       }
 
       const response = await fetch(
@@ -220,11 +276,15 @@ function ComputerGamePage() {
         );
       }
 
-      setGame(data);
+      setGame(data as GameState);
       setBetAmount("");
     } catch (err) {
       console.error(err);
-      setError(err.message);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred"
+      );
     } finally {
       setActionLoading(false);
     }
@@ -381,15 +441,13 @@ function ComputerGamePage() {
               <div className="showdown-panel">
 
                 <div className="showdown-title">
-                  {game.winnerPlayerIds?.length >
-                  1
+                  {(game.winnerPlayerIds?.length ?? 0) > 1
                     ? "Split Pot"
                     : "Winner"}
                 </div>
 
                 <div className="winner-name">
-                  {game.winnerPlayerIds?.length >
-                  1
+                  {(game.winnerPlayerIds?.length ?? 0) > 1
                     ? "It's a tie!"
                     : game.winnerPlayerId ===
                       "player1"

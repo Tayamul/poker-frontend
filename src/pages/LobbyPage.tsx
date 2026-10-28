@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "../App.css";
 
-const API_URL = "http://localhost:8080";
+const API_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 const SESSION_PREFIX = "nepalese-poker-room:";
 
 type RoomPlayer = {

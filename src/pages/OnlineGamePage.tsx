@@ -3,7 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../App.css";
 
-const API_URL = "http://localhost:8080";
+const API_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 const SESSION_PREFIX = "nepalese-poker-room:";
 
 type Card = {
@@ -221,28 +222,28 @@ function PlayerSeat({
   );
 }
 
-function describeAction(entry: ActionHistoryEntry): string {
-  const { playerName, action } = entry;
+// function describeAction(entry: ActionHistoryEntry): string {
+//   const { playerName, action } = entry;
 
-  switch (action.type) {
-    case "Fold":
-      return `${playerName} folded`;
+//   switch (action.type) {
+//     case "Fold":
+//       return `${playerName} folded`;
 
-    case "Check":
-      return `${playerName} checked`;
+//     case "Check":
+//       return `${playerName} checked`;
 
-    case "Call":
-      return action.amount != null
-        ? `${playerName} called ${action.amount}`
-        : `${playerName} called`;
+//     case "Call":
+//       return action.amount != null
+//         ? `${playerName} called ${action.amount}`
+//         : `${playerName} called`;
 
-    case "Bet":
-      return `${playerName} bet ${action.amount ?? 0}`;
+//     case "Bet":
+//       return `${playerName} bet ${action.amount ?? 0}`;
 
-    case "Raise":
-      return `${playerName} raised to ${action.amount ?? 0}`;
-  }
-}
+//     case "Raise":
+//       return `${playerName} raised to ${action.amount ?? 0}`;
+//   }
+// }
 
 function formatTableMessage(
   lastAction: string | undefined,
@@ -312,8 +313,6 @@ export default function OnlineGamePage() {
   const [countdownSeconds, setCountdownSeconds] = useState<number | null>(
   null,
 );
-
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const inFlightRef = useRef(false);
 
@@ -435,8 +434,6 @@ export default function OnlineGamePage() {
 
 
   const game = room?.game ?? null;
-  const actionHistory = game?.actionHistory ?? [];
-  const latestAction = actionHistory.at(-1) ?? null;
 
   const you = game?.players.find(
     (player) => player.id === credentials?.playerId,
@@ -528,16 +525,6 @@ export default function OnlineGamePage() {
   const maximumWager = canRaise
     ? (legalActions?.maxRaiseTo ?? highestBet + (you?.chips ?? 0))
     : (legalActions?.maxBet ?? you?.chips ?? 0);
-
-  const canReveal =
-    Boolean(
-      room &&
-        credentials &&
-        isFinished &&
-        room.revealDeadlineEpochMillis &&
-        Date.now() < room.revealDeadlineEpochMillis &&
-        !room.revealedPlayerIds?.includes(credentials.playerId),
-    );
 
   const performAction = async (
     action: string,
@@ -995,7 +982,7 @@ export default function OnlineGamePage() {
                         disabled={
                           actionLoading ||
                           !canCall ||
-                          amountToCall > you.chips
+                          amountToCall > (you?.chips ?? 0)
                         }
                         onClick={() => void performAction("call")}
                       >
