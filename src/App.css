@@ -462,14 +462,20 @@ button:disabled {
   transform: rotate(180deg);
 }
 
-/* Smaller centre suit — deliberately not oversized */
-
-.card-center-suit {
+.top-right-suit {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: clamp(19px, 2vw, 27px);
+  top: 5px;
+  right: 5px;
+  font-size: clamp(10px, 0.95vw, 13px);
+  line-height: 1;
+  font-weight: 800;
+}
+
+.card-large-suit {
+  position: absolute;
+  right: 8%;
+  bottom: 10%;
+  font-size: clamp(38px, 4vw, 54px);
   line-height: 1;
 }
 
@@ -846,8 +852,16 @@ button:disabled {
     width: clamp(38px, 11vw, 54px);
   }
 
-  .card-center-suit {
-    font-size: clamp(17px, 4.5vw, 22px);
+  .top-right-suit {
+    top: 4px;
+    right: 4px;
+    font-size: clamp(8px, 2.3vw, 10px);
+  }
+
+  .card-large-suit {
+    right: 7%;
+    bottom: 10%;
+    font-size: clamp(30px, 8vw, 38px);
   }
 
   .corner-rank {
@@ -928,8 +942,16 @@ button:disabled {
     width: clamp(36px, 4.5vw, 60px);
   }
 
-  .card-center-suit {
-    font-size: clamp(16px, 1.8vw, 22px);
+  .top-right-suit {
+    top: 4px;
+    right: 4px;
+    font-size: 10px;
+  }
+
+  .card-large-suit {
+    right: 7%;
+    bottom: 10%;
+    font-size: clamp(28px, 3vw, 38px);
   }
 
   .corner-rank {
@@ -1000,8 +1022,16 @@ button:disabled {
     gap: 3px;
   }
 
-  .card-center-suit {
-    font-size: 19px;
+  .top-right-suit {
+    top: 3px;
+    right: 3px;
+    font-size: 10px;
+  }
+
+  .card-large-suit {
+    right: 6%;
+    bottom: 9%;
+    font-size: 32px;
   }
 
   .corner-rank {

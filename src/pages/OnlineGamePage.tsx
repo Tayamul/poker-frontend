@@ -166,12 +166,13 @@ function PlayingCard({
         <span className="corner-suit">{suit}</span>
       </div>
 
-      <div className="card-center-suit">{suit}</div>
+      <span className="top-right-suit" aria-hidden="true">
+        {suit}
+      </span>
 
-      <div className="card-corner bottom-right">
-        <span className="corner-rank">{rank}</span>
-        <span className="corner-suit">{suit}</span>
-      </div>
+      <span className="card-large-suit" aria-hidden="true">
+        {suit}
+      </span>
     </div>
   );
 }
