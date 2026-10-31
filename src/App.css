@@ -993,7 +993,7 @@ button:disabled {
 
   .playing-card,
   .empty-card {
-    width: clamp(34px, 10vw, 42px);
+    width: clamp(38px, 11vw, 46px);
   }
 
   .community-cards {
@@ -1001,15 +1001,25 @@ button:disabled {
   }
 
   .card-center-suit {
-    font-size: 16px;
+    font-size: 19px;
   }
 
   .corner-rank {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .corner-suit {
-    font-size: 8px;
+    font-size: 10px;
+  }
+
+  .top-left {
+    top: 3px;
+    left: 3px;
+  }
+
+  .bottom-right {
+    right: 3px;
+    bottom: 3px;
   }
 
   .bet-controls .primary {

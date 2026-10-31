@@ -59,6 +59,28 @@ function cardSymbol(card: Card): string {
   return suitSymbols[card.suit] || card.suit;
 }
 
+function cardRankLabel(card: Card): string {
+  const rankLabels: Record<string, string> = {
+    Ace: "A",
+    King: "K",
+    Queen: "Q",
+    Jack: "J",
+    Ten: "10",
+    Two: "2",
+    Three: "3",
+    Four: "4",
+    Five: "5",
+    Six: "6",
+    Seven: "7",
+    Eight: "8",
+    Nine: "9",
+  };
+
+  const rank = String(card.rank);
+
+  return rankLabels[rank] ?? rank;
+}
+
 function cardColor(card: Card): string  {
   if (card.suit === "Hearts" || card.suit === "Diamonds") {
     return "red";
@@ -86,18 +108,19 @@ function PlayingCard({ card, hidden = false }: PlayingCardProps) {
 
   const suit = cardSymbol(card);
   const color = cardColor(card);
+  const rank = cardRankLabel(card);
 
   return (
     <div className={`playing-card ${color}`}>
       <div className="card-corner top-left">
-        <span className="corner-rank">{card.rank}</span>
+        <span className="corner-rank">{rank}</span>
         <span className="corner-suit">{suit}</span>
       </div>
 
       <div className="card-center-suit">{suit}</div>
 
       <div className="card-corner bottom-right">
-        <span className="corner-rank">{card.rank}</span>
+        <span className="corner-rank">{rank}</span>
         <span className="corner-suit">{suit}</span>
       </div>
     </div>
