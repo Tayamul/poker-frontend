@@ -921,21 +921,26 @@ export default function OnlineGamePage() {
                 <p className="winning-hand">{game.winningHand}</p>
               )}
 
-              {game.lastAction && <p>{game.lastAction}</p>}
+              {game.lastAction && (
+                <p className="showdown-action">{game.lastAction}</p>
+              )}
 
-              <button
-                className="start-button"
-                disabled={actionLoading}
-                onClick={() => void revealCards()}
-              >
-                Reveal Cards
-              </button>
-
-              <p className="showdown-note">
-                {room.sessionOver
-                  ? "The poker session has ended."
-                  : "Wait for the next hand or return to the lobby when you're ready to leave."}
-              </p>
+              {room.revealedPlayerIds?.includes(credentials.playerId) ? (
+                <div className="reveal-confirmation" role="status">
+                  <strong>
+                    <span aria-hidden="true">✓</span> Cards revealed
+                  </strong>
+                  <span>Your cards are now visible to other players.</span>
+                </div>
+              ) : (
+                <button
+                  className="start-button"
+                  disabled={actionLoading}
+                  onClick={() => void revealCards()}
+                >
+                  Reveal Cards
+                </button>
+              )}
 
               {room.sessionOver && (
                 <div className="showdown-panel restart-panel">

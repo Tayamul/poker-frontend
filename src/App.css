@@ -1191,3 +1191,65 @@ button:disabled {
     font-size: 0.7rem;
   }
 }
+
+/* Showdown information hierarchy */
+
+.showdown-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.showdown-title {
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+}
+
+.winner-name {
+  margin-top: 0;
+  font-size: clamp(21px, 3vw, 26px);
+}
+
+.winning-hand {
+  display: inline-block;
+  margin: 0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(229, 202, 99, 0.12);
+  color: #e5ca63;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.showdown-action {
+  margin: 2px 0;
+  color: #aebdb6;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.reveal-confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 5px;
+  padding: 12px;
+  border: 1px solid rgba(95, 190, 135, 0.35);
+  border-radius: 10px;
+  background: rgba(45, 125, 78, 0.14);
+  color: #a9e5bd;
+}
+
+.reveal-confirmation strong {
+  font-size: 14px;
+}
+
+.reveal-confirmation > span {
+  color: #c0cec5;
+  font-size: 12px;
+}
