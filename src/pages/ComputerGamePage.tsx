@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 const API_URL =
@@ -185,11 +186,27 @@ function PlayerSeat({ player, isYou, isCurrentTurn, isDealer }: PlayerSeatProps)
 }
 
 function ComputerGamePage() {
+  const navigate = useNavigate();
+
   const [game, setGame] = useState<GameState | null>(null);
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [betAmount, setBetAmount] = useState("");
+  const [showExitConfirmation, setShowExitConfirmation] = useState(false);
+
+  const requestHome = () => {
+    setShowExitConfirmation(true);
+  };
+
+  const confirmExit = () => {
+    setGame(null);
+    navigate("/", { replace: true });
+  };
+
+  const cancelExit = () => {
+    setShowExitConfirmation(false);
+  };
 
   const you = game?.players.find(
     (player) => player.id === "player1"
@@ -349,10 +366,9 @@ function ComputerGamePage() {
 
         <button
           className="new-game-button"
-          onClick={startGame}
-          disabled={loading || actionLoading}
+          onClick={requestHome}
         >
-          {loading ? "Starting..." : "New Game"}
+          Home
         </button>
       </header>
 
@@ -615,6 +631,42 @@ function ComputerGamePage() {
             )}
           </div>
         </main>
+      )}
+
+      {showExitConfirmation && (
+        <div className="confirmation-overlay">
+          <div
+            className="confirmation-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="exit-dialog-title"
+          >
+            <h2 id="exit-dialog-title">
+              Leave this game?
+            </h2>
+
+            <p>
+              Your current game will be lost.
+              Do you want to return home?
+            </p>
+
+            <div className="confirmation-actions">
+              <button
+                className="confirm-leave-button"
+                onClick={confirmExit}
+              >
+                Yes, leave
+              </button>
+
+              <button
+                className="confirm-stay-button"
+                onClick={cancelExit}
+              >
+                No, stay
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

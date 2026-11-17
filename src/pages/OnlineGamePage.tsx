@@ -1,6 +1,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "../App.css";
 
 const API_URL =
@@ -87,6 +87,7 @@ type RoomData = {
   handNumber?: number;
   eliminatedPlayerIds?: string[];
   restartVotes?: string[];
+  leftPlayerIds?: string[];
 };
 
 async function readResponse<T>(response: Response): Promise<T> {
@@ -323,6 +324,7 @@ function formatTableMessage(
 }
 
 export default function OnlineGamePage() {
+  const navigate = useNavigate();
   const { code } = useParams();
   const roomCode = code ?? "";
 
@@ -330,13 +332,69 @@ export default function OnlineGamePage() {
     useState<RoomCredentials | null>(null);
   const [credentialsLoaded, setCredentialsLoaded] = useState(false);
   const [room, setRoom] = useState<RoomData | null>(null);
+  const [departureNotice, setDepartureNotice] = useState("");
+  const previousLeftPlayerIdsRef = useRef<string[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState("");
   const [betAmount, setBetAmount] = useState("");
   const [countdownSeconds, setCountdownSeconds] = useState<number | null>(
-  null,
-);
+    null,
+  );
+  const [showExitConfirmation, setShowExitConfirmation] = useState(false);
+
+  useEffect(() => {
+    if (!departureNotice) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setDepartureNotice("");
+    }, 5000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [departureNotice]);
+
+  const requestHome = () => {
+    setShowExitConfirmation(true);
+  };
+
+  const confirmExit = async () => {
+    if (!credentials) {
+      setError("Your player credentials are unavailable. Please try again.");
+      return;
+    }
+
+    setError("");
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/rooms/${encodeURIComponent(roomCode)}/leave`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            playerId: credentials.playerId,
+            playerToken: credentials.playerToken,
+          }),
+        },
+      );
+
+      await readResponse<RoomData>(response);
+
+      navigate("/", { replace: true });
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to leave the game. Please try again.",
+      );
+    }
+  };
+
+  const cancelExit = () => {
+    setShowExitConfirmation(false);
+  };
 
   const inFlightRef = useRef(false);
 
@@ -381,6 +439,32 @@ export default function OnlineGamePage() {
       );
 
       const data = await readResponse<RoomData>(response);
+      const currentLeftPlayerIds = data.leftPlayerIds ?? [];
+      const previousLeftPlayerIds = previousLeftPlayerIdsRef.current;
+
+      if (previousLeftPlayerIds === null) {
+        // Initialise without announcing departures that happened before joining.
+        previousLeftPlayerIdsRef.current = currentLeftPlayerIds;
+      } else {
+        const newlyLeft = currentLeftPlayerIds.filter(
+          (id) => !previousLeftPlayerIds.includes(id),
+        );
+
+        if (newlyLeft.length > 0) {
+          const names = newlyLeft.map(
+            (id) => data.players.find((player) => player.id === id)?.name ?? "A player",
+          );
+
+          setDepartureNotice(
+            newlyLeft.length === 1
+              ? `${names[0]} has left the game.`
+              : `${names.join(", ")} have left the game.`,
+          );
+        }
+
+        previousLeftPlayerIdsRef.current = currentLeftPlayerIds;
+      }
+
       setRoom(data);
     } catch (err) {
       setError(
@@ -746,9 +830,12 @@ export default function OnlineGamePage() {
           <h1>Nepalese Poker</h1>
           <p>Texas Hold'em · No Limit · Room {room.code}</p>
         </div>
-        <Link className="new-game-button" to={`/room/${roomCode}`}>
-          Room lobby
-        </Link>
+        <button
+          className="new-game-button"
+          onClick={requestHome}
+        >
+          Home
+        </button>
       </header>
 
       {error && (
@@ -789,6 +876,12 @@ export default function OnlineGamePage() {
           </div>
 
           <div className="community-area">
+            {departureNotice && (
+              <div className="departure-notice" role="status" aria-live="polite">
+                {departureNotice}
+              </div>
+            )}
+
             <div className="community-label">Community Cards</div>
 
             <div className="community-cards">
@@ -871,12 +964,36 @@ export default function OnlineGamePage() {
                     } won the session.`}
               </div>
 
-              <p>
-                {room.restartVotes?.length ?? 0} of {room.players.length} players
-                voted to play again.
-              </p>
+              {room.sessionWinnerPlayerId === credentials.playerId &&
+                (room.leftPlayerIds?.length ?? 0) > 0 && (
+                  <p className="departure-win-message">
+                    You are the only active player remaining because the other player
+                    left the game. You win the session!
+                  </p>
+              )}
 
-              {room.restartVotes?.includes(credentials.playerId) ? (
+              {room.players.filter(
+                (player) => !(room.leftPlayerIds ?? []).includes(player.id),
+              ).length >= 2 && (
+                <p>
+                  {(room.restartVotes ?? []).filter(
+                    (id) => !(room.leftPlayerIds ?? []).includes(id),
+                  ).length}{" "}
+                  of{" "}
+                  {room.players.filter(
+                    (player) => !(room.leftPlayerIds ?? []).includes(player.id),
+                  ).length}{" "}
+                  active players voted to play again.
+                </p>
+              )}
+
+              {room.players.filter(
+                (player) => !(room.leftPlayerIds ?? []).includes(player.id),
+              ).length < 2 ? (
+                <p>
+                  At least two active players are needed to start another session.
+                </p>
+              ) : room.restartVotes?.includes(credentials.playerId) ? (
                 <p>You've voted to play again. Waiting for everyone else…</p>
               ) : (
                 <button
@@ -887,6 +1004,7 @@ export default function OnlineGamePage() {
                   {actionLoading ? "Submitting vote…" : "Play Again"}
                 </button>
               )}
+
             </div>
           ) : isFinished ? (
             <div className="showdown-panel">
@@ -958,11 +1076,23 @@ export default function OnlineGamePage() {
                   </div>
 
                   <p>
-                    {room.restartVotes?.length ?? 0} of {room.players.length} players
-                    voted to play again.
+                    {(room.restartVotes ?? []).filter(
+                      (id) => !(room.leftPlayerIds ?? []).includes(id),
+                    ).length}{" "}
+                    of{" "}
+                    {room.players.filter(
+                      (player) => !(room.leftPlayerIds ?? []).includes(player.id),
+                    ).length}{" "}
+                    active players voted to play again.
                   </p>
 
-                  {room.restartVotes?.includes(credentials.playerId) ? (
+                  {room.players.filter(
+                    (player) => !(room.leftPlayerIds ?? []).includes(player.id),
+                  ).length < 2 ? (
+                    <p>
+                      At least two active players are needed to start another session.
+                    </p>
+                  ) : room.restartVotes?.includes(credentials.playerId) ? (
                     <p>You've voted to play again. Waiting for everyone else…</p>
                   ) : (
                     <button
@@ -1074,6 +1204,42 @@ export default function OnlineGamePage() {
           )}
         </div>
       </main>
+
+      {showExitConfirmation && (
+        <div className="confirmation-overlay">
+          <div
+            className="confirmation-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="exit-dialog-title"
+          >
+            <h2 id="exit-dialog-title">
+              Leave this game?
+            </h2>
+
+            <p>
+              Are you sure you want to return home?
+              Your current game will be lost.
+            </p>
+
+            <div className="confirmation-actions">
+              <button
+                className="confirm-leave-button"
+                onClick={confirmExit}
+              >
+                Yes, leave
+              </button>
+
+              <button
+                className="confirm-stay-button"
+                onClick={cancelExit}
+              >
+                No, stay
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

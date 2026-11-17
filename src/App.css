@@ -1283,3 +1283,116 @@ button:disabled {
   color: #c0cec5;
   font-size: 12px;
 }
+
+/* ========================================
+   LEAVE CONFIRMATION SHOWDOWN
+   ======================================== */
+
+.confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 15, 10, 0.38);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.confirmation-dialog {
+  width: min(340px, calc(100% - 32px));
+  padding: 22px 24px;
+  border: 1px solid rgba(220, 190, 130, 0.45);
+  border-radius: 14px;
+  background: rgba(22, 35, 29, 0.94);
+  color: #f7f3e8;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.confirmation-dialog h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.confirmation-dialog p {
+  margin: 0 0 20px;
+  color: #d5ddd6;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirm-leave-button,
+.confirm-stay-button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.confirm-leave-button {
+  background: #b83a3a;
+  color: white;
+}
+
+.confirm-stay-button {
+  background: #d9c8a3;
+  color: #26352c;
+}
+
+.confirm-leave-button:hover {
+  background: #cc4848;
+}
+
+.confirm-stay-button:hover {
+  background: #ead9b5;
+}
+
+@media (max-width: 380px) {
+  .confirmation-dialog {
+    padding: 18px;
+  }
+
+  .confirmation-actions {
+    gap: 8px;
+  }
+
+  .confirm-leave-button,
+  .confirm-stay-button {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+}
+
+.departure-notice {
+  width: fit-content;
+  max-width: 90%;
+  margin: 0 auto 12px;
+  padding: 9px 16px;
+  border: 1px solid rgba(255, 220, 150, 0.5);
+  border-radius: 10px;
+  background: rgba(30, 45, 32, 0.92);
+  color: #ffe5ad;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.departure-win-message {
+  margin: 12px auto;
+  max-width: 440px;
+  color: #ffe5ad;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+}
